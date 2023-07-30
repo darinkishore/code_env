@@ -25,9 +25,8 @@ class Vector:
         if not isinstance(scalar, (int, float)):
             raise TypeError("Scalar must be a number.")
         return Vector(*(x * scalar for x in self.components))
-
-    def __eq__(self, other):
-return self.components == other.components
+def __eq__(self, other):
+    return self.components == other.components
 
 
     def dot(self, other):

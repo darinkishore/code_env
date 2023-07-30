@@ -27,8 +27,7 @@ class Vector:
         return Vector(*(x * scalar for x in self.components))
 
     def __eq__(self, other):
-        """Compare two vectors for equality."""
-        return math.isclose(self.magnitude(), other.magnitude(), rel_tol=1e-9)
+return self.components == other.components
 
     def __ne__(self, other):
         """Compare two vectors for inequality."""

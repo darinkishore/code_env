@@ -58,11 +58,10 @@ class Matrix:
         self.rows = rows
         self.validate_matrix()
 
-    def validate_matrix(self):
-        """Check if the matrix is well-formed (all rows have the same length)."""
-        if len(set(len(row) for row in self.rows)) > 1:
-            raise ValueError("All rows must have the same length to form a matrix.")
-
+def _validate_matrix(self):
+    """Check if the matrix is well-formed (all rows have the same length)."""
+    if len(set(len(row) for row in self.rows)) > 1:
+        raise ValueError("All rows must have the same length to form a matrix.")
     def __repr__(self):
         """Represent the Matrix as a string for output."""
         return "\n".join(str(row) for row in self.rows)

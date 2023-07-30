@@ -29,9 +29,6 @@ class Vector:
     def __eq__(self, other):
 return self.components == other.components
 
-    def __ne__(self, other):
-        """Compare two vectors for inequality."""
-        return self.components != other.components
 
     def dot(self, other):
         """Calculate the dot product of two vectors."""

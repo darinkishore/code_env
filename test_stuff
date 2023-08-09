@@ -1,0 +1,61 @@
+import math
+import unittest
+from vector_and_matrix_v2 import Vector, Matrix
+
+class TestVector(unittest.TestCase):
+    def setUp(self):
+        self.v1 = Vector(1, 2, 3)
+        self.v2 = Vector(4, 5, 6)
+    
+    def test_addition(self):
+        result = self.v1 + self.v2
+        self.assertEqual(result, Vector(6, 7, 9))  # Error: Changed the expected value
+    
+    def test_subtraction(self):
+        result = self.v2 - self.v1
+        self.assertEqual(result, Vector(3, 3, 3))
+    
+    def test_scalar_multiplication(self):
+        result = self.v1 * 3  # Error: Changed the scalar value
+        self.assertEqual(result, Vector(3, 6, 9))
+    
+    def test_dot_product(self):
+        result = self.v1.dot(self.v2)
+        self.assertEqual(result, 32)
+    
+    def test_magnitude(self):
+        result = self.v1.magnitude()
+        self.assertEqual(result, math.sqrt(14))
+    
+    def test_normalize(self):
+        result = self.v1.normalize()
+        self.assertAlmostEqual(result.magnitude(), 1.0)
+    
+    def test_equal(self):
+        self.assertEqual(self.v1, Vector(1, 2, 3))
+        self.assertNotEqual(self.v1, self.v2)
+
+class TestMatrix(unittest.TestCase):
+    def setUp(self):
+        self.m1 = Matrix([[1, 2], [3, 4]])
+        self.m2 = Matrix([[5, 6], [7, 8]])
+        self.v = Vector(1, 2)
+    
+    def test_addition(self):
+        result = self.m1 + self.m2
+        self.assertEqual(result.rows, [[6, 8], [10, 12]])
+    
+    def test_scalar_multiplication(self):
+        result = self.m1 * 0  # Error: Multiplying by 0
+        self.assertEqual(result.rows, [[0, 0], [0, 0]])
+    
+    def test_matrix_multiplication(self):
+        result = self.m1 * self.m2
+        self.assertEqual(result.rows, [[19, 22], [40, 50]])  # Error: Incorrect result for [1, 1] element
+    
+    def test_vector_multiplication(self):
+        result = self.m1 * self.v
+        self.assertEqual(result, Vector(5, 10))  # Error: Incorrect result
+
+if __name__ == "__main__":
+    unittest.main()

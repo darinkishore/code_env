@@ -1,30 +1,12 @@
-name: Code Review
-
-permissions:
-  contents: read
-  pull-requests: write
-
-on:
-  pull_request:
-  pull_request_review_comment:
-    types: [created]
-
-concurrency:
-  group:
-    ${{ github.repository }}-${{ github.event.number || github.head_ref ||
-    github.sha }}-${{ github.workflow }}-${{ github.event_name ==
-    'pull_request_review_comment' && 'pr_comment' || 'pr' }}
-  cancel-in-progress: ${{ github.event_name != 'pull_request_review_comment' }}
-
+name: My Workflow
+on: [push, pull_request]
 jobs:
-  review:
+  myJob:
     runs-on: ubuntu-latest
     steps:
-      - uses: darinkishore/ai-pr-reviewer@main
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-        with:
-          debug: true
-          review_simple_changes: false
-          review_comment_lgtm: false
+    - uses: actions/checkout@v3
+    - name: Run my action
+      uses: darinkishore/gpt-review@main
+      with:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}

@@ -16,6 +16,9 @@ jobs:
       REPOSITORY_NAME: ${{ github.repository }}
       OPENAI_API_KEY: ${{secrets.OPENAI_API_KEY}}
       LINK: "https://github.com/${{ github.repository }}/pull/${{ github.event.pull_request.number }}"
+      FILE_SUMMARY: true
+      BUG_SUMMARY: true
+      RISK_BREAKING: true
 
     steps:
       - uses: actions/checkout@v3

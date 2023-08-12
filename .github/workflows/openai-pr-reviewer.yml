@@ -1,12 +1,43 @@
-name: My Workflow
-on: [pull_request]
+name: OpenAI PR Comment
+on:
+  pull_request:
+
+permissions:
+  contents: read
+  pull-requests: write
+
 jobs:
-  myJob:
+  add_pr_comment:
     runs-on: ubuntu-latest
+    env:
+      GIT_COMMIT_HASH: ${{ github.event.pull_request.head.sha }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      PR_NUMBER: ${{ github.event.pull_request.number }}
+      REPOSITORY_NAME: ${{ github.repository }}
+      OPENAI_API_KEY: ${{secrets.OPENAI_API_KEY}}
+      LINK: "https://github.com/${{ github.repository }}/pull/${{ github.event.pull_request.number }}"
+
     steps:
-    - uses: actions/checkout@v3
-    - name: Run my action
-      uses: darinkishore/gpt-review@main
-      with:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.11
+
+      - run: |
+          sudo apt-get update
+          python3 -m venv .env
+          source .env/bin/activate
+          python -m pip install --upgrade pip
+          python -m pip install gpt-review
+
+      - run: |
+          source .env/bin/activate
+          gpt github review \
+            --access-token $GITHUB_TOKEN \
+            --pull-request $PR_NUMBER \
+            --repository $REPOSITORY_NAME
+        continue-on-error: true
